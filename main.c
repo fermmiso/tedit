@@ -26,7 +26,7 @@
 #define TEDIT_VERSION "0.1"
 #define TEDIT_QUIT 3
 #define TAB_STOP 8
-#define	HIGH_LIGHT_NUMBERS (1<<0)	
+#define HIGH_LIGHT_NUMBERS (1<<0)	
 #define HIGH_LIGHT_STRINGS (1<<1)
 
 /* PROTOTYPE */
