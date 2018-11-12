@@ -33,7 +33,7 @@
 void Refresh_Screen();
 void Disable_Raw_Mode();
 void Set_Status_Message( onst char *fmt, ...);
-char *Prompt(char *prompt, void (*callback)(char *, int));
+char *Prompt( char *prompt, void (*callback)(char *, int) );
 
 /* DATA */
 enum KEYS{
@@ -122,7 +122,7 @@ struct Syntax HLDB[] = {
 	HIGH_LIGHT_NUMBERS | HIGH_LIGHT_STRINGS
 	},
 };
-#define HLDB_ENTRIES (sizeof(HLDB) / sizeof(HLDB[0]))
+#define HLDB_ENTRIES ( sizeof(HLDB) / sizeof(HLDB[0]) )
 
 /* GLOBAL VARIABLES */
 struct Config *config;
