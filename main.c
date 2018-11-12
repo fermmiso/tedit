@@ -32,8 +32,8 @@
 /* PROTOTYPE */
 void Refresh_Screen();
 void Disable_Raw_Mode();
-void Set_Status_Message( const char *fmt, ...);
-char *Prompt( char *prompt, void (*callback)( char *, int ) );
+void Set_Status_Message( onst char *fmt, ...);
+char *Prompt(char *prompt, void (*callback)(char *, int));
 
 /* DATA */
 enum KEYS{
@@ -136,7 +136,7 @@ void die( const char *string )
 	exit(1);
 }
 
-void free_mem( void *ptr , const char *msg)
+void free_mem( void *ptr , const char *msg )
 {
 	if(ptr){
 		free(ptr);
@@ -145,7 +145,7 @@ void free_mem( void *ptr , const char *msg)
 	}
 }
 
-void Check_Mem( void *mem, const char *string)
+void Check_Mem( void *mem, const char *string )
 {
 	if(!mem){
 		printf("Memory error: %s",string);
@@ -371,7 +371,7 @@ int Read_Key()
 	}
 }
 	
-int Get_Cursor_Position(int *cols, int *rows)
+int Get_Cursor_Position( int *cols, int *rows )
 {
 	char buffer[32];
 	unsigned int i = 0;
@@ -419,12 +419,12 @@ int Get_Win_Size( int *cols, int *rows )
 }
 
 /* SYNTAX HIGHLIGHTING */
-int Is_Seperator(int c)
+int Is_Seperator( int c )
 {
 	return isspace(c) || c == '\0' || strchr(",.()+-/*=~%<>[];",c) != NULL;
 }
 
-void Update_Syntax(File_row *row) /*TODO Break this up into smaller functions.*/
+void Update_Syntax( File_row *row ) /*TODO Break this up into smaller functions.*/
 {
 	row->high_lighted = realloc(row->high_lighted, *row->render_size);	
 	memset(row->high_lighted, HL_NORMAL, *row->render_size);		
@@ -964,7 +964,7 @@ void Find()
 }
 
 /* APPEND BUFFER */
-void Append_Buffer(struct Buffer *buff, const char *key_press, int size)
+void Append_Buffer( struct Buffer *buff, const char *key_press, int size )
 {	
 	char *new_buff = realloc(buff->string, buff->length + size);
 	int length = buff->length;
@@ -976,7 +976,7 @@ void Append_Buffer(struct Buffer *buff, const char *key_press, int size)
 	buff->length += size;
 }
 
-void Free_Buffer(struct Buffer *buff)
+void Free_Buffer( struct Buffer *buff )
 {
 	if(buff->string){
 		free_mem(buff->string,"buff->string");
@@ -1031,7 +1031,7 @@ char *Prompt( char *prompt, void( *callback )( char *, int ) )
 	}
 }
 
-void Move_Cursor(int key_press)
+void Move_Cursor( int key_press )
 {
 	File_row *mc_row = (*config->cursor_y >= *config->num_of_rows ? NULL : &config->row[*config->cursor_y]);
 	switch(key_press){
@@ -1164,7 +1164,7 @@ void Process_Key_Press()
 }
 
 /* OUTPUT */
-void Set_Status_Message(const char *fmt, ...)
+void Set_Status_Message( const char *fmt, ... )
 {
 	va_list list;
 	va_start(list,fmt);
@@ -1174,7 +1174,7 @@ void Set_Status_Message(const char *fmt, ...)
 	config->status_time = time(NULL);
 }
 
-void Draw_Status_Bar(struct Buffer *buff)
+void Draw_Status_Bar( struct Buffer *buff )
 {
 	Append_Buffer(buff,"\x1b[7m",4);	// 7m for inverted colors
 
@@ -1201,7 +1201,7 @@ void Draw_Status_Bar(struct Buffer *buff)
 	Append_Buffer(buff,"\r\n",2);
 }
 
-void Draw_Message_Bar( struct Buffer *buff)
+void Draw_Message_Bar( struct Buffer *buff )
 {
 	Append_Buffer(buff,"\x1b[K",3);
 	int msg_len = strlen(config->status_msg);
@@ -1233,7 +1233,7 @@ void Scroll()
 	}
 }
 	
-void Draw_Rows(struct Buffer *buff)
+void Draw_Rows( struct Buffer *buff )
 {
 	int y = 0;
 	for( y = 0 ; y < *config->screen_rows ; y++){
