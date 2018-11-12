@@ -134,7 +134,6 @@ void die( const char *string )
 	Refresh_Screen();
 	perror(string);
 	exit(1);
-
 }
 
 void free_mem( void *ptr , const char *msg)
@@ -882,7 +881,7 @@ void Save_File()
 		close(fd);
 	}
 	Set_Status_Message("Error Saving: %s",strerror(errno));
-	free(buff);				//also didn't know you can free a returned malloc'd pointer from a function.
+	free(buff);
 }
 
 /* SEARCH */
@@ -1180,8 +1179,12 @@ void Draw_Status_Bar(struct Buffer *buff)
 	Append_Buffer(buff,"\x1b[7m",4);	// 7m for inverted colors
 
 	char status_bar[80], render_bar[80];
-	int len = snprintf(status_bar,sizeof(status_bar),"%.20s - %d lines %s", config->filename ? config->filename : "[No Name]", *config->num_of_rows, *config->dirty_flag ? "(Modified)": "");
-	int rlen = snprintf(render_bar,sizeof(render_bar), "%s | %d%d",config->syntax ?  config->syntax->file_type : "no ft", *config->cursor_y,*config->num_of_rows);
+	int len = snprintf(status_bar,sizeof(status_bar),"%.20s - %d lines %s", 
+					   config->filename ? config->filename : "[No Name]", 
+					   *config->num_of_rows, *config->dirty_flag ? "(Modified)": "");
+	int rlen = snprintf(render_bar,sizeof(render_bar), "%s | %d%d",
+						config->syntax ?  config->syntax->file_type : "no ft", 
+						*config->cursor_y,*config->num_of_rows);
 	if(len > *config->screen_cols){
 		len = *config->screen_cols;	
 	}
@@ -1238,7 +1241,7 @@ void Draw_Rows(struct Buffer *buff)
 		if( file_row >= *config->num_of_rows){
 			if( *config->num_of_rows == 0 && y == *config->screen_rows / 3){
 				char welcome[64];		//welcome buffer
-				int welcome_len = snprintf(welcome,sizeof(welcome),"Tedit-or Version %s",TEDIT_VERSION);//get the length and put string toghether
+				int welcome_len = snprintf(welcome,sizeof(welcome),"Tedit-or Version %s",TEDIT_VERSION);
 				welcome[welcome_len] = '\0';
 				if(welcome_len > *config->screen_cols){
 					welcome_len = *config->screen_cols;
@@ -1318,7 +1321,8 @@ void Refresh_Screen()
 	Draw_Message_Bar(&buff);
 
 	char curs_buff[32];
-	snprintf(curs_buff,sizeof(curs_buff),"\x1b[%d;%dH", (*config->cursor_y - *config->current_row) + 1, (*config->render_x - *config->current_col )+ 1 );
+	snprintf(curs_buff,sizeof(curs_buff),"\x1b[%d;%dH", 
+			 (*config->cursor_y - *config->current_row) + 1, (*config->render_x - *config->current_col )+ 1 );
 	Append_Buffer(&buff,curs_buff,strlen(curs_buff));
 	
 	Append_Buffer(&buff,"\x1b[?25h",6);
